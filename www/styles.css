@@ -1,0 +1,105 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    font-weight: 400;
+    line-height: 1.5;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+:root, input {
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+    font-size: 1rem;
+}
+
+main {
+    padding: 2rem;
+}
+
+h1 > sub {
+    font-size: 0.75rem;
+}
+
+h2, label {
+    font-weight: 600;
+    font-size: 16px;
+    margin: 2rem 0 0.25rem;
+    display: block;
+}
+
+#inOpenapiSpecError,
+#inJsonDataError {
+    color: #e53935;
+}
+
+textarea, pre, code {
+    font-family: monospace;
+    font-size: 1rem;
+    line-height: 1.3rem;
+}
+
+textarea, input {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+textarea {
+    min-height: 5rem;
+}
+
+#results {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.result {
+    border: 1px solid #ddd;
+    border-left-width: 0.5rem;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+}
+
+.result__valid {
+    border-color: #43a047;
+}
+
+.result__invalid {
+    border-color: #e53935;
+}
+
+.result summary {
+    font-weight: 600;
+}
+
+.result-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.result-json-schema > pre {
+    border-radius: 0.25rem;
+    background: #313131;
+    color: white;
+    padding: 1rem;
+    font-size: 0.8em;
+    margin: 0.5rem 0;
+}
+
+hr {
+    margin: 0.5rem 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
