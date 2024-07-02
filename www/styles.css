@@ -55,6 +55,7 @@ textarea, input {
 
 textarea {
     min-height: 5rem;
+    min-width: 100%;
 }
 
 #results {
@@ -89,6 +90,10 @@ textarea {
     gap: 1rem;
 }
 
+.result-content > * {
+    min-width: 0;
+}
+
 .result-json-schema > pre {
     border-radius: 0.25rem;
     background: #313131;
@@ -96,6 +101,8 @@ textarea {
     padding: 1rem;
     font-size: 0.8em;
     margin: 0.5rem 0;
+    max-height: 20em;
+    overflow: auto;
 }
 
 hr {
