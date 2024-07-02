@@ -6,6 +6,12 @@ import yaml from 'js-yaml'
 document.addEventListener('DOMContentLoaded', () => {
   const KEY_OPEN_API_SPEC = 'OPEN_API_SPEC'
   const KEY_JSON_DATA = 'JSON_DATA'
+  const TO_JSON_SCHEMA_OPTS = { strictMode: false }
+  const AJV_OPTS = {
+    strictSchema: 'log',
+    allErrors: true,
+    validateFormats: false,
+  }
 
   let openApiSpec = null;
   let jsonData = null;
@@ -38,13 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const _jsonSchemas = Object.entries(openApiSpec.components.schemas)
       .sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()))
-      .map(([schemaName, schema]) => {
-        return {schemaName, jsonSchema: toJsonSchema(schema), schema};
-      });
-    const ajv = new Ajv({
-      allErrors: true,
-      validateFormats: false,
-    });
+      .map(([schemaName, schema]) => ({
+        schemaName, jsonSchema: toJsonSchema(schema, TO_JSON_SCHEMA_OPTS), schema
+      }));
+    const ajv = new Ajv(AJV_OPTS);
     _jsonSchemas.forEach(x => {
       ajv.addSchema(x.jsonSchema, '#/components/schemas/' + x.schemaName)
     });
