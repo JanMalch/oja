@@ -1,6 +1,6 @@
 {
   "name": "oja",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "scripts": {
     "dev": "esbuild src/index.mjs --outdir=www --bundle --servedir=www",
     "build:js": "esbuild src/index.mjs --outdir=dist --bundle --minify",

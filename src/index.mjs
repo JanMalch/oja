@@ -6,7 +6,7 @@ import yaml from 'js-yaml'
 document.addEventListener('DOMContentLoaded', () => {
   const KEY_OPEN_API_SPEC = 'OPEN_API_SPEC'
   const KEY_JSON_DATA = 'JSON_DATA'
-  const TO_JSON_SCHEMA_OPTS = { strictMode: false }
+  const TO_JSON_SCHEMA_OPTS = {strictMode: false}
   const AJV_OPTS = {
     strictSchema: 'log',
     allErrors: true,
@@ -32,8 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function onOpenApiSpecChange(value) {
+    const isContractInJson = value.startsWith('{')
     try {
-      openApiSpec = value.startsWith('{') ? JSON.parse(value) : yaml.load(value);
+      openApiSpec = isContractInJson ? JSON.parse(value) : yaml.load(value);
       localStorage.setItem(KEY_OPEN_API_SPEC, value)
       window.inOpenapiSpecError.textContent = '';
     } catch (e) {
@@ -45,15 +46,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const _jsonSchemas = Object.entries(openApiSpec.components.schemas)
       .sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()))
       .map(([schemaName, schema]) => ({
-        schemaName, jsonSchema: toJsonSchema(schema, TO_JSON_SCHEMA_OPTS), schema
-      }));
+        schemaName,
+        jsonSchema: toJsonSchema(schema, TO_JSON_SCHEMA_OPTS),
+        schema,
+        rawInput: isContractInJson ? JSON.stringify(schema, null, 2) : yaml.dump(schema, {indent: 2}),
+      }))
+      .map((container, _, self) => {
+        const resolvedJsonSchemaStr = JSON.stringify(container.jsonSchema, (key, value) => {
+          if (typeof value === 'object') {
+            // let's see how war this naive approach gets us
+            const ref = value['$ref']?.toString()?.substring(21);
+            if (ref) {
+              return self.find(s => s.schemaName === ref)?.jsonSchema;
+            }
+          }
+          return value
+        }, 2)
+        return {
+          ...container,
+          jsonSchemaStr: JSON.stringify(container.jsonSchema, null, 2),
+          resolvedJsonSchemaStr,
+        }
+      });
+
     const ajv = new Ajv(AJV_OPTS);
     _jsonSchemas.forEach(x => {
       ajv.addSchema(x.jsonSchema, '#/components/schemas/' + x.schemaName)
     });
     jsonSchemas = _jsonSchemas.map(x => {
       const validate = ajv.compile(x.jsonSchema);
-      return {...x, jsonSchemaStr: JSON.stringify(x.jsonSchema, null, 4), validate}
+      return {...x, validate}
     });
     revalidate()
   }
@@ -89,9 +111,21 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="result-messages">
             ${messages}
           </div>
-          <div class="result-json-schema">
-          <small>JSON schema</small>
-          <pre>${x.jsonSchemaStr}</pre>
+          <div class="result-schemas">
+            <input type="radio" name="${x.schemaName}" id="${x.schemaName}_resolvedJsonSchema" checked>
+            <input type="radio" name="${x.schemaName}" id="${x.schemaName}_jsonSchema">
+            <input type="radio" name="${x.schemaName}" id="${x.schemaName}_input">
+            
+            <div class="result-schemas__tabs">
+                <label for="${x.schemaName}_resolvedJsonSchema">Resolved JSON schema</label>
+                <label for="${x.schemaName}_jsonSchema">JSON schema</label>
+                <label for="${x.schemaName}_input">Input</label>
+            </div>
+            <div class="result-schemas__panels">
+              <pre>${x.resolvedJsonSchemaStr}</pre>
+              <pre>${x.jsonSchemaStr}</pre>
+              <pre>${x.rawInput}</pre>
+            </div>
           </div>
           </div>
         </details>

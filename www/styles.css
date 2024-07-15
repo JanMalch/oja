@@ -94,15 +94,61 @@ textarea {
     min-width: 0;
 }
 
-.result-json-schema > pre {
-    border-radius: 0.25rem;
+.result-schemas {
+    margin: 0.5rem 0;
+}
+
+.result-schemas > input {
+    position: absolute;
+    left: -100vw;
+    width: 0;
+    height: 0;
+}
+
+.result-schemas__tabs {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+
+.result-schemas__tabs > label {
+    font-weight: normal;
+    display: block;
+    margin: 0;
+    color: #313131;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid white;
+    transition: background-color 0.22s, color 0.22s;
+}
+
+.result-schemas__tabs > label:hover {
+    background-color: rgba(48, 48, 48, 0.2);
+}
+
+.result-schemas > input:first-child:checked ~ .result-schemas__tabs > label:first-child,
+.result-schemas > input:nth-child(2):checked ~ .result-schemas__tabs > label:nth-child(2),
+.result-schemas > input:nth-child(3):checked ~ .result-schemas__tabs > label:last-child {
+    background-color: #313131;
+    color: white;
+    font-weight: 500;
+}
+
+.result-schemas pre {
+    display: none;
     background: #313131;
     color: white;
     padding: 1rem;
     font-size: 0.8em;
-    margin: 0.5rem 0;
+    margin: 0;
     max-height: 20em;
     overflow: auto;
+}
+
+.result-schemas > input:first-child:checked ~ .result-schemas__panels > pre:first-child,
+.result-schemas > input:nth-child(2):checked ~ .result-schemas__panels > pre:nth-child(2),
+.result-schemas > input:nth-child(3):checked ~ .result-schemas__panels > pre:last-child {
+    display: block;
 }
 
 hr {
