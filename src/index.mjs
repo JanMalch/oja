@@ -52,16 +52,22 @@ document.addEventListener('DOMContentLoaded', () => {
         rawInput: isContractInJson ? JSON.stringify(schema, null, 2) : yaml.dump(schema, {indent: 2}),
       }))
       .map((container, _, self) => {
-        const resolvedJsonSchemaStr = JSON.stringify(container.jsonSchema, (key, value) => {
-          if (typeof value === 'object') {
-            // let's see how war this naive approach gets us
-            const ref = value['$ref']?.toString()?.substring(21);
-            if (ref) {
-              return self.find(s => s.schemaName === ref)?.jsonSchema;
+        let resolvedJsonSchemaStr
+        try {
+          resolvedJsonSchemaStr = JSON.stringify(container.jsonSchema, (key, value) => {
+            if (typeof value === 'object') {
+              // let's see how war this naive approach gets us
+              const ref = value['$ref']?.toString()?.substring(21);
+              if (ref) {
+                // TODO: how to handle circular schemas?
+                return self.find(s => s.schemaName === ref)?.jsonSchema;
+              }
             }
-          }
-          return value
-        }, 2)
+            return value
+          }, 2)
+        } catch (e) {
+          resolvedJsonSchemaStr = e.toString()
+        }
         return {
           ...container,
           jsonSchemaStr: JSON.stringify(container.jsonSchema, null, 2),
