@@ -136,7 +136,6 @@ textarea {
 .result-schemas > input:nth-child(3):checked ~ .result-schemas__tabs > label:last-child {
     background-color: #313131;
     color: white;
-    font-weight: 500;
 }
 
 .result-schemas pre {
