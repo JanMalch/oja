@@ -44,6 +44,10 @@ textarea, pre, code {
     line-height: 1.3rem;
 }
 
+textarea, pre {
+    tab-size: 2;
+}
+
 textarea, input {
     display: block;
     width: 100%;
