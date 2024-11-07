@@ -1,0 +1,343 @@
+@import "./nord.css"; /* FIXME: from node_modules */
+@import "@fontsource/jetbrains-mono/latin.css";
+
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 16px;
+
+  color-scheme: dark;
+  color: var(--nord6);
+  background-color: var(--nord0);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --color-border: var(--nord2);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+*::-webkit-scrollbar-corner {
+  background: 0 0;
+}
+
+a {
+  font-weight: 500;
+  color: var(--nord8);
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: var(--nord9);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--nord0);
+  background-color: var(--nord8);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+button[disabled] {
+  cursor: not-allowed;
+  background-color: var(--nord3);
+}
+
+.loading,
+button[disabled].loading {
+  cursor: wait;
+}
+
+button:not([disabled]):hover {
+  background-color: var(--nord9);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+button.secondary {
+  border-color: var(--nord8);
+  background-color: transparent;
+  color: var(--nord8);
+}
+
+button.secondary[disabled] {
+  border-color: var(--nord3);
+  background-color: transparent;
+  color: var(--nord3);
+}
+
+button.secondary:not([disabled]):hover {
+  background-color: var(--nord1);
+}
+
+.icon-btn {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: none;
+  color: var(--nord6);
+  background-color: transparent;
+  transition: background-color 0.22s;
+  line-height: 1;
+  padding: 0.25em;
+  display: grid;
+  place-items: center;
+}
+
+button.icon-btn:hover,
+button.icon-btn:focus {
+  background-color: var(--nord1);
+}
+
+svg {
+  width: 24px;
+  height: 24px;
+}
+
+.cm-editor .cm-content {
+  font-family: "JetBrains Mono", monospace;
+}
+
+#starter {
+  height: 100vh;
+  width: 130ch;
+  max-width: 100vw;
+  margin: 0 auto;
+  overflow: auto;
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  box-shadow: 0px 0px 40px -15px rgba(0, 0, 0, 0.75);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+#input {
+  min-height: 0;
+}
+
+#hero {
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 2rem;
+}
+
+#hero > h1 {
+  margin: 1rem 0 2rem;
+  text-align: center;
+}
+
+#hero > p {
+  text-align: center;
+  text-wrap: pretty;
+  margin: 1rem 0;
+}
+
+ol {
+  padding: 0;
+  margin: 0 1rem 1rem;
+}
+
+.cm-focused {
+  outline: none !important;
+}
+
+.cm-line:has(.cm-lintPoint-error) {
+  background-color: color-mix(in srgb, var(--nord11) 40%, transparent);
+}
+
+.schema-input {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  height: 100%;
+}
+
+.schema-input__editor {
+  min-height: 0;
+  max-height: 100%;
+  overflow: auto;
+  padding: 1rem;
+  flex: 1 1 auto;
+  border-bottom: 1px solid var(--color-border);
+}
+
+#load {
+  width: 100%;
+  border-radius: 0;
+  font-size: 1.15em;
+  padding: 1em 1.2em;
+}
+
+.schema-input__message {
+  padding: 2rem;
+  color: var(--nord13);
+  margin: 0;
+  font-size: 1rem;
+}
+
+#loaded-mode {
+  height: 100vh;
+}
+
+.validation-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100%;
+}
+
+.validation-container.initial-filter-only .data-input {
+  display: none;
+}
+
+.data-input {
+  padding: 1rem;
+  border-right: 1px solid var(--color-border);
+  overflow: auto;
+}
+
+.schema-overview {
+  padding: 2rem;
+  overflow: auto;
+  box-shadow: 0px 0px 40px -15px rgba(0, 0, 0, 0.75);
+}
+
+.schema-overview > ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.schema-overview > ul > li {
+  border-bottom: 2px solid var(--nord3);
+  padding: 1.5rem 1rem;
+}
+
+.schema-overview > ul > li > h3 {
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+  font-size: 1.25em;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.schema-overview > ul > li > h3 > button {
+  margin-left: auto;
+}
+
+.schema-overview > ul > li.valid > h3 > svg {
+  color: var(--nord14);
+}
+
+.schema-overview > ul > li.invalid > h3 > svg {
+  color: var(--nord11);
+}
+
+.schema-overview > ul > li > ul {
+  margin: 1rem 0 0;
+  color: var(--nord6);
+}
+
+input.schema-search {
+  outline: none;
+  border: 1px solid var(--color-border);
+  background: var(--nord1);
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-family: inherit;
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+dialog {
+  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  outline: none;
+  background-color: var(--nord0);
+  padding: 0;
+}
+
+dialog::backdrop {
+  backdrop-filter: grayscale(0.5) blur(5px);
+}
+
+dialog > .cm-editor {
+  padding: 1rem;
+}
+
+.dialog-header {
+  padding: 0.75rem 1rem 0.75rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dialog-header > h3 {
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+button[role="tab"] {
+  border-radius: 0;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background-color: transparent;
+  color: var(--nord6);
+}
+
+button[role="tab"][aria-selected="true"] {
+  border-color: var(--nord8);
+  color: var(--nord8);
+}
+
+button[role="tab"]:hover {
+  background-color: var(--nord1);
+}
+
+.schema-modes {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+}
