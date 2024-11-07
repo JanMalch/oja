@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:gh": "vite build --base /oja/",
     "preview": "vite preview",
     "format": "npx prettier --write **/*.js **/*.css **/*.ts **/*.html"
   },
