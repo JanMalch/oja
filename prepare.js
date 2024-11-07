@@ -4,7 +4,7 @@ import yaml from "js-yaml";
 
 const TO_JSON_SCHEMA_OPTS = Object.freeze({ strictMode: false });
 const AJV_OPTS = Object.freeze({
-  strictSchema: 'log',
+  strictSchema: "log",
   allErrors: true,
   validateFormats: false,
 });

@@ -125,7 +125,7 @@ export function setupValidationMode(el, data, content, q) {
       }
 
       const nameEl = document.createElement("h3");
-      nameEl.innerHTML = `${isValid == null ? '' : isValid ? OK_SVG : ERR_SVG}<span>${schema.name}</span><button class="icon-btn">${SCHEMA_SVG}</button>`;
+      nameEl.innerHTML = `${isValid == null ? "" : isValid ? OK_SVG : ERR_SVG}<span>${schema.name}</span><button class="icon-btn">${SCHEMA_SVG}</button>`;
 
       const errorsEl = document.createElement("ul");
       errorsEl.className = "errors";
