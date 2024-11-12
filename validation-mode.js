@@ -201,7 +201,7 @@ You can then search for that schema with the searchbox below.
               replaceContent(view, fmt(schema.formatted.jsonSchema.resolved));
               break;
           }
-          v.view.dispatch({
+          view.dispatch({
             effects: [
               lang.reconfigure(
                 ev.detail === OPENAPI_SCHEMA_YAML ? yaml() : json(),
