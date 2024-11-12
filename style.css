@@ -240,9 +240,9 @@ ol {
 }
 
 .schema-overview > p {
-    margin: 0 0 1rem;
-    font-size: 0.875rem;
-    text-wrap: pretty;
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  text-wrap: pretty;
 }
 
 .schema-overview > ul {

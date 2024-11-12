@@ -92,16 +92,20 @@ function resolveAndFormatJsonSchema(name, jsonSchema, schemas) {
             const ref = value["$ref"]?.toString()?.substring(21);
             if (ref === name) {
               // https://json-schema.org/understanding-json-schema/structuring#recursion
-              return { "$ref": "#" }
+              return { $ref: "#" };
             }
             if (ref) {
               // TODO: this seems like a terrible idea
               const resolved = schemas.find((s) => s.name === ref)?.jsonSchema;
-              if (!resolved) return resolved
-              const formatted = resolveAndFormatJsonSchema(ref, resolved, schemas);
+              if (!resolved) return resolved;
+              const formatted = resolveAndFormatJsonSchema(
+                ref,
+                resolved,
+                schemas,
+              );
               if (!formatted.ok) return resolved;
-              const parsed = JSON.parse(formatted.text)
-              delete parsed['$schema']
+              const parsed = JSON.parse(formatted.text);
+              delete parsed["$schema"];
               return parsed;
             }
           }
@@ -111,7 +115,7 @@ function resolveAndFormatJsonSchema(name, jsonSchema, schemas) {
       ),
     };
   } catch (e) {
-    console.warn('miiii')
+    console.warn("miiii");
     return {
       ok: false,
       text: e,

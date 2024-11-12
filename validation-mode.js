@@ -92,7 +92,7 @@ This will likely result in a lot of errors, because your data simply does not ma
 <br/>
 If you are working with OpenAPI and want to validate a response, you'll have to check in the contract which response schema is used for that individual endpoint.
 You can then search for that schema with the searchbox below.
-`
+`;
 
   const searchEl = document.createElement("input");
   searchEl.className = "schema-search";
