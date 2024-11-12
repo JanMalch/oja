@@ -86,6 +86,14 @@ export function setupValidationMode(el, data, content, q) {
   let parsed = content ? JSON.parse(content) : "";
   let query = q ?? "";
 
+  const explanationEl = document.createElement("p");
+  explanationEl.innerHTML = `Your data on the left will be validated <b>in its entirety against every schema</b> of your input.
+This will likely result in a lot of errors, because your data simply does not match every schema.
+<br/>
+If you are working with OpenAPI and want to validate a response, you'll have to check in the contract which response schema is used for that individual endpoint.
+You can then search for that schema with the searchbox below.
+`
+
   const searchEl = document.createElement("input");
   searchEl.className = "schema-search";
   searchEl.type = "search";
@@ -232,6 +240,7 @@ export function setupValidationMode(el, data, content, q) {
 
   const schemasContainerEl = document.createElement("div");
   schemasContainerEl.className = "schema-overview";
+  schemasContainerEl.appendChild(explanationEl);
   schemasContainerEl.appendChild(searchEl);
   schemasContainerEl.appendChild(listEl);
   containerEl.appendChild(editorEl);

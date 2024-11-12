@@ -239,6 +239,12 @@ ol {
   box-shadow: 0px 0px 40px -15px rgba(0, 0, 0, 0.75);
 }
 
+.schema-overview > p {
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+    text-wrap: pretty;
+}
+
 .schema-overview > ul {
   list-style: none;
   padding: 0;
