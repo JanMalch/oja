@@ -51,6 +51,7 @@ function prepareOpenApi(data) {
     });
   schemas.forEach((container, _, schemas) => {
     container.formatted.jsonSchema.resolved = resolveAndFormatJsonSchema(
+      container.name,
       container.jsonSchema,
       schemas,
     );
@@ -74,11 +75,12 @@ function prepareJsonSchema(schema) {
 }
 
 /**
- * @param {Record<string, any>} jsonSchema
- * @param {Array<{ jsonSchema: Record<string, any> }>} schemas
+ * @param {string} name
+ * @param {import("json-schema").JSONSchema4} jsonSchema
+ * @param {Array<{ jsonSchema: import("json-schema").JSONSchema4 }>} schemas
  * @returns {{ok: boolean, text: string}}
  */
-function resolveAndFormatJsonSchema(jsonSchema, schemas) {
+function resolveAndFormatJsonSchema(name, jsonSchema, schemas) {
   try {
     return {
       ok: true,
@@ -88,9 +90,19 @@ function resolveAndFormatJsonSchema(jsonSchema, schemas) {
           if (typeof value === "object") {
             // let's see how war this naive approach gets us
             const ref = value["$ref"]?.toString()?.substring(21);
+            if (ref === name) {
+              // https://json-schema.org/understanding-json-schema/structuring#recursion
+              return { "$ref": "#" }
+            }
             if (ref) {
-              // TODO: how to handle circular schemas?
-              return schemas.find((s) => s.name === ref)?.jsonSchema;
+              // TODO: this seems like a terrible idea
+              const resolved = schemas.find((s) => s.name === ref)?.jsonSchema;
+              if (!resolved) return resolved
+              const formatted = resolveAndFormatJsonSchema(ref, resolved, schemas);
+              if (!formatted.ok) return resolved;
+              const parsed = JSON.parse(formatted.text)
+              delete parsed['$schema']
+              return parsed;
             }
           }
           return value;
@@ -99,6 +111,7 @@ function resolveAndFormatJsonSchema(jsonSchema, schemas) {
       ),
     };
   } catch (e) {
+    console.warn('miiii')
     return {
       ok: false,
       text: e,
