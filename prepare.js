@@ -123,7 +123,6 @@ function resolveAndFormatJsonSchema(name, jsonSchema, schemas) {
       ),
     };
   } catch (e) {
-    console.warn("miiii");
     return {
       ok: false,
       text: e,
