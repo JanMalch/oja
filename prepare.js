@@ -82,32 +82,40 @@ function prepareJsonSchema(schema) {
  */
 function resolveAndFormatJsonSchema(name, jsonSchema, schemas) {
   try {
+    const result = {
+      $schema: "http://json-schema.org/draft-04/schema#",
+      $ref: "#/$defs/" + name,
+      $defs: {},
+    };
+
+    function add(n, s) {
+      result.$defs[n] = JSON.parse(
+        JSON.stringify(s, (key, value) => {
+          if (typeof value === "object") {
+            const ref = value["$ref"]?.toString()?.substring(21);
+            if (!ref) {
+              return value;
+            }
+            if (ref !== n) {
+              const resolved = schemas.find((s) => s.name === ref)?.jsonSchema;
+              add(ref, resolved);
+            }
+            return { $ref: "#/$defs/" + ref };
+          }
+          return value;
+        }),
+      );
+    }
+
+    add(name, jsonSchema);
     return {
       ok: true,
       text: JSON.stringify(
-        jsonSchema,
-        (key, value) => {
-          if (typeof value === "object") {
-            // let's see how war this naive approach gets us
-            const ref = value["$ref"]?.toString()?.substring(21);
-            if (ref === name) {
-              // https://json-schema.org/understanding-json-schema/structuring#recursion
-              return { $ref: "#" };
-            }
-            if (ref) {
-              // TODO: this seems like a terrible idea
-              const resolved = schemas.find((s) => s.name === ref)?.jsonSchema;
-              if (!resolved) return resolved;
-              const formatted = resolveAndFormatJsonSchema(
-                ref,
-                resolved,
-                schemas,
-              );
-              if (!formatted.ok) return resolved;
-              const parsed = JSON.parse(formatted.text);
-              delete parsed["$schema"];
-              return parsed;
-            }
+        result,
+        function (key, value) {
+          // remove $schema from $defs, just to clean up a bit
+          if (key === "$schema" && !("$defs" in this)) {
+            return undefined;
           }
           return value;
         },
